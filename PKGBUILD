@@ -98,8 +98,7 @@ options=(
   !lto
 )
 source=(
-  "https://archive.mesa3d.org/mesa-$_pkgver.tar.xz"{,.sig}
-
+  "https://archive.mesa3d.org/mesa-$_pkgver.tar.xz"
   # Fix DotA 2 hangs
   # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/38017
   0001-anv-fix-FS-output-attachment-map-building.patch
