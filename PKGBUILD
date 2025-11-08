@@ -31,7 +31,6 @@ pkgname=(
   vulkan-mesa-layers
   vulkan-broadcom
   vulkan-panfrost
-  mesa-docs
 )
 pkgver=25.2.6
 _pkgver=${pkgver/[a-z]/-&}
@@ -87,10 +86,6 @@ makedepends=(
   # mesa-only deps
   libsysprof-capture
   valgrind
-
-  # html-docs
-  python-sphinx
-  python-sphinx-hawkmoth
 
   # etnaviv deps
   python-pycparser
@@ -262,7 +257,7 @@ build() {
     -D osmesa=false
     -D platforms=wayland
     -D shared-llvm=disabled
-    -D html-docs=enabled
+    -D html-docs=disabled
     -D intel-rt=disabled
     -D libunwind=disabled
     -D microsoft-clc=disabled
@@ -380,13 +375,9 @@ package_mesa() {
     _pick vkpanfrost $icddir/panfrost_icd*.json
     _pick vkpanfrost $libdir/libvulkan_panfrost.so
 
-    _pick docs usr/share/doc
-
     # indirect rendering
     ln -sr $libdir/libGLX_{mesa,indirect}.so.0
   )
-
-  install -Dm644 mesa-$_pkgver/docs/license.rst -t "$pkgdir/usr/share/licenses/$pkgname"
 }
 
 package_opencl-mesa() {
@@ -418,8 +409,6 @@ package_opencl-mesa() {
   )
 
   mv opencl/* "$pkgdir"
-
-  install -Dm644 mesa-$_pkgver/docs/license.rst -t "$pkgdir/usr/share/licenses/$pkgname"
 }
 
 package_vulkan-asahi() {
@@ -442,8 +431,6 @@ package_vulkan-asahi() {
   provides=(vulkan-driver)
 
   mv vkasahi/* "$pkgdir"
-
-  install -Dm644 mesa-$_pkgver/docs/license.rst -t "$pkgdir/usr/share/licenses/$pkgname"
 }
 
 package_vulkan-dzn() {
@@ -466,8 +453,6 @@ package_vulkan-dzn() {
   provides=(vulkan-driver)
 
   mv vkd3d12/* "$pkgdir"
-
-  install -Dm644 mesa-$_pkgver/docs/license.rst -t "$pkgdir/usr/share/licenses/$pkgname"
 }
 
 package_vulkan-freedreno() {
@@ -490,8 +475,6 @@ package_vulkan-freedreno() {
   provides=(vulkan-driver)
 
   mv vkfdreno/* "$pkgdir"
-
-  install -Dm644 mesa-$_pkgver/docs/license.rst -t "$pkgdir/usr/share/licenses/$pkgname"
 }
 
 package_vulkan-gfxstream() {
@@ -511,8 +494,6 @@ package_vulkan-gfxstream() {
   provides=(vulkan-driver)
 
   mv vkgfxstr/* "$pkgdir"
-
-  install -Dm644 mesa-$_pkgver/docs/license.rst -t "$pkgdir/usr/share/licenses/$pkgname"
 }
 
 package_vulkan-nouveau() {
@@ -535,8 +516,6 @@ package_vulkan-nouveau() {
   provides=(vulkan-driver)
 
   mv vknvidia/* "$pkgdir"
-
-  install -Dm644 mesa-$_pkgver/docs/license.rst -t "$pkgdir/usr/share/licenses/$pkgname"
 }
 
 package_vulkan-radeon() {
@@ -562,8 +541,6 @@ package_vulkan-radeon() {
   replaces=('amdvlk<=2025.Q2.1-1')
 
   mv vkradeon/* "$pkgdir"
-
-  install -Dm644 mesa-$_pkgver/docs/license.rst -t "$pkgdir/usr/share/licenses/$pkgname"
 }
 
 package_vulkan-swrast() {
@@ -589,8 +566,6 @@ package_vulkan-swrast() {
   provides=(vulkan-driver)
 
   mv vkswrast/* "$pkgdir"
-
-  install -Dm644 mesa-$_pkgver/docs/license.rst -t "$pkgdir/usr/share/licenses/$pkgname"
 }
 
 package_vulkan-virtio() {
@@ -612,8 +587,6 @@ package_vulkan-virtio() {
   provides=(vulkan-driver)
 
   mv vkvirtio/* "$pkgdir"
-
-  install -Dm644 mesa-$_pkgver/docs/license.rst -t "$pkgdir/usr/share/licenses/$pkgname"
 }
 
 package_vulkan-mesa-device-select() {
@@ -625,8 +598,6 @@ package_vulkan-mesa-device-select() {
   )
 
   mv vkdevice/* "$pkgdir"
-
-  install -Dm644 mesa-$_pkgver/docs/license.rst -t "$pkgdir/usr/share/licenses/$pkgname"
 }
 
 package_vulkan-mesa-layers() {
@@ -641,8 +612,6 @@ package_vulkan-mesa-layers() {
   replaces=(vulkan-mesa-layer)
 
   mv vklayer/* "$pkgdir"
-
-  install -Dm644 mesa-$_pkgver/docs/license.rst -t "$pkgdir/usr/share/licenses/$pkgname"
 }
 
 package_vulkan-broadcom() {
@@ -656,8 +625,6 @@ package_vulkan-broadcom() {
   provides=(vulkan-driver)
 
   mv vkbroadcom/* "$pkgdir"
-
-  install -Dm644 mesa-$_pkgver/docs/license.rst -t "$pkgdir/usr/share/licenses/$pkgname"
 }
 
 package_vulkan-panfrost() {
@@ -671,16 +638,4 @@ package_vulkan-panfrost() {
   provides=(vulkan-driver)
 
   mv vkpanfrost/* "$pkgdir"
-
-  install -Dm644 mesa-$_pkgver/docs/license.rst -t "$pkgdir/usr/share/licenses/$pkgname"
 }
-
-package_mesa-docs() {
-  pkgdesc="Mesa's documentation"
-
-  mv docs/* "$pkgdir"
-
-  install -Dm644 mesa-$_pkgver/docs/license.rst -t "$pkgdir/usr/share/licenses/$pkgname"
-}
-
-# vim:set sw=2 sts=-1 et:
