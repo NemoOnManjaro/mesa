@@ -48,12 +48,9 @@ makedepends=(
   glibc
   libdrm
   libelf
-  libglvnd
   libpng
   libva
-  libvdpau
   libxcb
-  libxext
   libxml2
   llvm
   llvm-libs
@@ -63,7 +60,6 @@ makedepends=(
   systemd-libs
   vulkan-icd-loader
   wayland
-  xcb-util-keysyms
   zlib
   zstd
 
@@ -72,6 +68,7 @@ makedepends=(
   clang
   cmake
   elfutils
+  binutils
   glslang
   libclc
   meson
@@ -200,13 +197,14 @@ build() {
     -D gallium-extra-hud=true
     -D gallium-mediafoundation=disabled
     -D gallium-rusticl=true
+    -D gallium-vdpau=disabled
+    -D gallium-va=disabled
     -D gles1=disabled
-    -D dri3=disabled
     -D egl=enabled
+    -D glx=disabled
+    -D glvnd=disabled
     -D lmsensors=disabled
-    -D osmesa=false
     -D platforms=wayland
-    -D shared-llvm=disabled
     -D html-docs=disabled
     -D intel-rt=disabled
     -D libunwind=disabled
@@ -227,8 +225,8 @@ build() {
   # Inject subproject packages
   export MESON_PACKAGE_CACHE_DIR="$srcdir"
 
-  arch-meson mesa-$_pkgver build "${meson_options[@]}"
-  meson compile -C build
+  CC=gcc arch-meson mesa-$_pkgver build "${meson_options[@]}"
+  CC=gcc meson compile -C build
 }
 
 _pick() {
@@ -248,7 +246,6 @@ package_mesa() {
     glibc
     libdrm
     libelf
-    libglvnd
     llvm-libs
     spirv-tools
     wayland
@@ -259,10 +256,8 @@ package_mesa() {
   provides=(
     "libva-mesa-driver=$epoch:$pkgver-$pkgrel"
     "mesa-libgl=$epoch:$pkgver-$pkgrel"
-    "mesa-vdpau=$epoch:$pkgver-$pkgrel"
     libva-driver
     opengl-driver
-    vdpau-driver
   )
   conflicts=(
     'libva-mesa-driver<1:24.2.7-1'
