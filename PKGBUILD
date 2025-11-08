@@ -181,26 +181,10 @@ sha256sums=('361c97e8afa5fe20141c5362c5b489040751e12861c186a16c621a2fb182fc42'
             'SKIP'
 
 prepare() {
+  ls -la
   cd mesa-$_pkgver
-
-  local src
-  for src in "${source[@]}"; do
-    src="${src%%::*}"
-    src="${src##*/}"
-    src="${src%.zst}"
-    [[ $src = *.patch ]] || continue
-    echo "Applying patch $src..."
-    patch -Np1 < "../$src"
-  done
-
-  # Include package release in version string so Chromium invalidates
-  # its GPU cache; otherwise it can cause pages to render incorrectly.
-  # https://bugs.launchpad.net/ubuntu/+source/chromium-browser/+bug/2020604
+  patch -p1 --input="${srcdir}/0001-anv-fix-FS-output-attachment-map-building.patch"
   echo "$_pkgver-arch$epoch.$pkgrel" >VERSION
-
-  if [[ $CARCH == "armv7h" ]]; then
-    sed -i "/c_cpp_args += '-mtls-dialect=gnu2'/d" meson.build
-  fi
 }
 
 build() {
