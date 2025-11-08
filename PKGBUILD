@@ -178,10 +178,9 @@ sha256sums=('361c97e8afa5fe20141c5362c5b489040751e12861c186a16c621a2fb182fc42'
             'SKIP'
             'SKIP'
             'SKIP'
-            'SKIP'
+            'SKIP')
 
 prepare() {
-  ls -la
   cd mesa-$_pkgver
   patch -p1 --input="${srcdir}/0001-anv-fix-FS-output-attachment-map-building.patch"
   echo "$_pkgver-arch$epoch.$pkgrel" >VERSION
